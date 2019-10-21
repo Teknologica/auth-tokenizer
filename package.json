@@ -1,0 +1,20 @@
+{
+  "name": "auth-tokenizer",
+  "version": "1.0.0",
+  "description": "Simple Rebilly Auth Tokenizer for fast development",
+  "main": "index.js",
+  "scripts": {
+    "go": "node index.js"
+  },
+  "repository": "https://github.com/Teknologica/auth-tokenizer.git",
+  "author": "Teknologica <andrei@ilabsinc.com>",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "commander": "^3.0.2",
+    "dotenv": "^8.2.0",
+    "open": "^7.0.0",
+    "rebilly-js-sdk": "^15.1.0"
+  }
+}
