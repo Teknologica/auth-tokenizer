@@ -4,7 +4,7 @@ const open = require('open');
 const config = require('dotenv').config();
 const program = require('commander');
 
-const {parsed: {API_KEY = null, TARGET_URL = null}} = config;
+const {parsed: {API_KEY = null, TARGET_URL = null, API_URL = null}} = config;
 const log = console.log;
 
 program
@@ -20,9 +20,11 @@ if (API_KEY === null) {
     return log(chalk.red(`API Key not defined in .env file`));
 }
 
-const api = RebillyAPI({apiKey: API_KEY, sandbox: false});
+const sandbox = API_KEY.includes('_sandbox');
+const api = RebillyAPI({apiKey: API_KEY, sandbox});
 const targetURL = program.target || TARGET_URL;
-api.setEndpoints({live: `http://api.dev-local.rebilly.com`});
+const endpoint = API_URL ? API_URL : `http://api-sandbox.dev-local.rebilly.com`;
+api.setEndpoints({[sandbox ? 'sandbox' : 'live']: endpoint});
 
 const announce = (title) => {
     log(chalk.bold.cyan(title));
@@ -52,7 +54,8 @@ if (program.open) {
             announce('Creating Token...');
             log(chalk.yellow(token));
             announce('Opening Browser...');
-            const page = `${targetURL}/?token=${token}&redirectUrl=https://www.google.ca`;
+            const redirect = program.redirect ? program.redirect : `https://www.google.ca`;
+            const page = `${targetURL}/?token=${token}&redirectUrl=${redirect}`;
             log(chalk.yellow(page));
             await open(page);
         } catch (err) {
@@ -60,7 +63,3 @@ if (program.open) {
         }
     })();
 }
-
-
-
-
